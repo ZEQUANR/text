@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 func main() {
 
 	// // 全局：
@@ -16,12 +14,12 @@ func main() {
 	// d := [...]struct {
 	// 	name string
 	// 	age  uint8
-	// }{
+	// } {
 	// 	{"user1", 10}, // 可省略元素类型。
 	// 	{"user2", 20}, // 别忘了最后一行的逗号。
 	// }
 
-	var arr2 = []int{1, 2, 3, 4, 5, 6}
+	// var arr2 = []int{1, 2, 3, 4, 5, 6}
 
-	fmt.Println(cap(arr2), len(arr2))
+	// fmt.Println(cap(arr2), len(arr2))
 }
