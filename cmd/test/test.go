@@ -19,7 +19,7 @@ func main() {
 	// 	{"user2", 20}, // 别忘了最后一行的逗号。
 	// }
 
-	// var arr2 = []int{1, 2, 3, 4, 5, 6}
+	var arr2 = []int{1, 2, 3, 4, 5, 6}
 
-	// fmt.Println(cap(arr2), len(arr2))
+	fmt.Println(cap(arr2), len(arr2))
 }
