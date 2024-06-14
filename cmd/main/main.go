@@ -1,80 +1,56 @@
 package main
 
 import (
-	"context"
-	"fmt"
-
-	"github.com/ZEQUANR/zhulong/driver"
-	"github.com/ZEQUANR/zhulong/ent"
-	"github.com/ZEQUANR/zhulong/ent/node"
+	"log"
 )
 
-func Do(ctx context.Context, client *ent.Client) error {
-	root, err := client.Node.
-		Create().
-		SetValue(2).
-		Save(ctx)
-	if err != nil {
-		return fmt.Errorf("creating the root: %w", err)
-	}
+// func Do(ctx context.Context, client *ent.Client) error {
+// 	a8m, err := client.User.
+// 		Create().
+// 		SetAge(30).
+// 		SetName("Mashraki").
+// 		Save(ctx)
+// 	if err != nil {
+// 		return fmt.Errorf("creating user: %w", err)
+// 	}
 
-	// Add additional nodes to the tree:
-	//
-	//       2
-	//     /   \
-	//    1     4
-	//        /   \
-	//       3     5
-	//
+// 	log.Println("user:", a8m)
 
-	// Unlike `Save`, `SaveX` panics if an error occurs.
-	n1 := client.Node.
-		Create().
-		SetValue(1).
-		SetParent(root).
-		SaveX(ctx)
-	n4 := client.Node.
-		Create().
-		SetValue(4).
-		SetParent(root).
-		SaveX(ctx)
-	n3 := client.Node.
-		Create().
-		SetValue(3).
-		SetParent(n4).
-		SaveX(ctx)
-	n5 := client.Node.
-		Create().
-		SetValue(5).
-		SetParent(n4).
-		SaveX(ctx)
+// 	card1, err := client.Card.
+// 		Create().
+// 		SetOwner(a8m).
+// 		SetNumber("1020").
+// 		SetExpired(time.Now().Add(time.Minute)).
+// 		Save(ctx)
+// 	if err != nil {
+// 		return fmt.Errorf("creating card: %w", err)
+// 	}
 
-	fmt.Println("Tree leafs", []int{n1.Value, n3.Value, n5.Value})
-	// Output: Tree leafs [1 3 5]
+// 	log.Println("card:", card1)
 
-	// Get all leafs (nodes without children).
-	// Unlike `Int`, `IntX` panics if an error occurs.
-	ints := client.Node.
-		Query().                             // All nodes.
-		Where(node.Not(node.HasChildren())). // Only leafs.
-		Order(ent.Asc(node.FieldValue)).     // Order by their `value` field.
-		GroupBy(node.FieldValue).            // Extract only the `value` field.
-		IntsX(ctx)
-	fmt.Println(ints)
-	// Output: [1 3 5]
+// 	// Only returns the card of the user,
+// 	// and expects that there's only one.
+// 	card2, err := a8m.QueryCard().Only(ctx)
+// 	if err != nil {
+// 		return fmt.Errorf("querying card: %w", err)
+// 	}
 
-	// Get orphan nodes (nodes without parent).
-	// Unlike `Only`, `OnlyX` panics if an error occurs.
-	orphan := client.Node.
-		Query().
-		Where(node.Not(node.HasParent())).
-		OnlyX(ctx)
-	fmt.Println(orphan)
-	// Output: Node(id=1, value=2, parent_id=0)
+// 	log.Println("card:", card2)
 
-	return nil
-}
+// 	// The Card entity is able to query its owner using
+// 	// its back-reference.
+// 	owner, err := card2.QueryOwner().Only(ctx)
+
+// 	if err != nil {
+// 		return fmt.Errorf("querying owner: %w", err)
+// 	}
+
+// 	log.Println("owner:", owner)
+
+// 	return nil
+// }
 
 func main() {
-	Do(context.Background(), driver.MysqlClient)
+	// Do(context.Background(), driver.MysqlClient)
+	log.Println("owner:")
 }

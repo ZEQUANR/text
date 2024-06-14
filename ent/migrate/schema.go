@@ -8,32 +8,46 @@ import (
 )
 
 var (
-	// NodesColumns holds the columns for the "nodes" table.
-	NodesColumns = []*schema.Column{
+	// CardsColumns holds the columns for the "cards" table.
+	CardsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "value", Type: field.TypeInt},
-		{Name: "ssssss", Type: field.TypeInt, Nullable: true},
+		{Name: "expired", Type: field.TypeTime},
+		{Name: "number", Type: field.TypeString},
+		{Name: "user_card", Type: field.TypeInt, Unique: true},
 	}
-	// NodesTable holds the schema information for the "nodes" table.
-	NodesTable = &schema.Table{
-		Name:       "nodes",
-		Columns:    NodesColumns,
-		PrimaryKey: []*schema.Column{NodesColumns[0]},
+	// CardsTable holds the schema information for the "cards" table.
+	CardsTable = &schema.Table{
+		Name:       "cards",
+		Columns:    CardsColumns,
+		PrimaryKey: []*schema.Column{CardsColumns[0]},
 		ForeignKeys: []*schema.ForeignKey{
 			{
-				Symbol:     "nodes_nodes_children",
-				Columns:    []*schema.Column{NodesColumns[2]},
-				RefColumns: []*schema.Column{NodesColumns[0]},
-				OnDelete:   schema.SetNull,
+				Symbol:     "cards_users_card",
+				Columns:    []*schema.Column{CardsColumns[3]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.NoAction,
 			},
 		},
 	}
+	// UsersColumns holds the columns for the "users" table.
+	UsersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "age", Type: field.TypeInt},
+		{Name: "name", Type: field.TypeString},
+	}
+	// UsersTable holds the schema information for the "users" table.
+	UsersTable = &schema.Table{
+		Name:       "users",
+		Columns:    UsersColumns,
+		PrimaryKey: []*schema.Column{UsersColumns[0]},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
-		NodesTable,
+		CardsTable,
+		UsersTable,
 	}
 )
 
 func init() {
-	NodesTable.ForeignKeys[0].RefTable = NodesTable
+	CardsTable.ForeignKeys[0].RefTable = UsersTable
 }
